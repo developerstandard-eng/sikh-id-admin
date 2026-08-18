@@ -44,6 +44,7 @@ export const listUsers = (params: Record<string, string | number> = {}) => {
   const qs = new URLSearchParams(params as Record<string, string>).toString();
   return request(`/api/v1/admin/users${qs ? `?${qs}` : ''}`);
 };
+export const deleteUser = (id: number) => request(`/api/v1/admin/users/${id}`, { method: 'DELETE' });
 
 // --- Segments ---
 export const listSegments = () => request('/api/v1/segments');

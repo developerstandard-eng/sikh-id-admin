@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
 import { AdminTopBar } from '@/components/AdminShell';
-import { listUsers } from '@/lib/adminApi';
+import { listUsers, deleteUser } from '@/lib/adminApi';
 
 interface UserRow {
   id: number; sikh_id: string; full_name: string; email: string;
@@ -18,6 +18,7 @@ export default function UsersPage() {
   const [maxC, setMaxC] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -38,6 +39,24 @@ export default function UsersPage() {
   };
 
   useEffect(() => { load(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleDelete = async (u: UserRow) => {
+    const confirmed = window.confirm(
+      `Permanently delete ${u.full_name} (${u.sikh_id})? This removes their account and profile data — it can't be undone.`
+    );
+    if (!confirmed) return;
+
+    setDeletingId(u.id);
+    try {
+      await deleteUser(u.id);
+      setUsers((prev) => prev.filter((row) => row.id !== u.id));
+      setTotal((prev) => prev - 1);
+    } catch (e: any) {
+      alert(e.message || 'Failed to delete member.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="flex">
@@ -83,13 +102,14 @@ export default function UsersPage() {
                   <th className="px-5 py-3 font-medium">Country</th>
                   <th className="px-5 py-3 font-medium">Signed up via</th>
                   <th className="px-5 py-3 font-medium">Completion</th>
+                  <th className="px-5 py-3 font-medium"></th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
-                  <tr><td colSpan={6} className="px-5 py-6 text-center text-gray-400">Loading...</td></tr>
+                  <tr><td colSpan={7} className="px-5 py-6 text-center text-gray-400">Loading...</td></tr>
                 ) : users.length === 0 ? (
-                  <tr><td colSpan={6} className="px-5 py-6 text-center text-gray-400">No members match this filter.</td></tr>
+                  <tr><td colSpan={7} className="px-5 py-6 text-center text-gray-400">No members match this filter.</td></tr>
                 ) : (
                   users.map((u) => (
                     <tr key={u.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50">
@@ -105,6 +125,15 @@ export default function UsersPage() {
                           </div>
                           <span className="text-xs text-gray-500">{u.profile_completion}%</span>
                         </div>
+                      </td>
+                      <td className="px-5 py-3 text-right">
+                        <button
+                          onClick={() => handleDelete(u)}
+                          disabled={deletingId === u.id}
+                          className="text-xs text-red-600 hover:text-red-700 hover:underline disabled:opacity-50 disabled:no-underline"
+                        >
+                          {deletingId === u.id ? 'Deleting...' : 'Delete'}
+                        </button>
                       </td>
                     </tr>
                   ))
