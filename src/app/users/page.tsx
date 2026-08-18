@@ -1,0 +1,120 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import AdminSidebar from '@/components/AdminSidebar';
+import { AdminTopBar } from '@/components/AdminShell';
+import { listUsers } from '@/lib/adminApi';
+
+interface UserRow {
+  id: number; sikh_id: string; full_name: string; email: string;
+  country: string | null; profile_completion: number; source_site: string | null; created_at: string;
+}
+
+export default function UsersPage() {
+  const [users, setUsers] = useState<UserRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [search, setSearch] = useState('');
+  const [minC, setMinC] = useState('');
+  const [maxC, setMaxC] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const params: Record<string, string> = { pageSize: '50' };
+      if (search) params.search = search;
+      if (minC) params.completion_min = minC;
+      if (maxC) params.completion_max = maxC;
+      const data = await listUsers(params);
+      setUsers(data.users);
+      setTotal(data.total);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { load(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <div className="flex">
+      <AdminSidebar />
+      <div className="flex-1 min-h-screen bg-[#f5f6f8]">
+        <AdminTopBar title="Members" subtitle={`${total} members across the Sikh Group network`} />
+
+        <main className="p-8">
+          <div className="flex items-end gap-3 mb-5">
+            <label className="flex-1">
+              <span className="block text-xs font-medium text-navy mb-1">Search name, email, or Sikh ID</span>
+              <input
+                value={search} onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && load()}
+                className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm"
+                placeholder="e.g. Navdeep, TSG-10001, name@email.com"
+              />
+            </label>
+            <label>
+              <span className="block text-xs font-medium text-navy mb-1">Min %</span>
+              <input value={minC} onChange={(e) => setMinC(e.target.value)} type="number" min={0} max={100}
+                className="w-24 border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
+            </label>
+            <label>
+              <span className="block text-xs font-medium text-navy mb-1">Max %</span>
+              <input value={maxC} onChange={(e) => setMaxC(e.target.value)} type="number" min={0} max={100}
+                className="w-24 border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
+            </label>
+            <button onClick={load} className="bg-saffron text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-saffron-dark">
+              Filter
+            </button>
+          </div>
+
+          {error ? <p className="text-sm text-red-600 mb-4">{error}</p> : null}
+
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs text-gray-400 uppercase tracking-wide border-b border-gray-100">
+                  <th className="px-5 py-3 font-medium">Name</th>
+                  <th className="px-5 py-3 font-medium">Sikh ID</th>
+                  <th className="px-5 py-3 font-medium">Email</th>
+                  <th className="px-5 py-3 font-medium">Country</th>
+                  <th className="px-5 py-3 font-medium">Signed up via</th>
+                  <th className="px-5 py-3 font-medium">Completion</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan={6} className="px-5 py-6 text-center text-gray-400">Loading...</td></tr>
+                ) : users.length === 0 ? (
+                  <tr><td colSpan={6} className="px-5 py-6 text-center text-gray-400">No members match this filter.</td></tr>
+                ) : (
+                  users.map((u) => (
+                    <tr key={u.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50">
+                      <td className="px-5 py-3 font-medium text-navy">{u.full_name}</td>
+                      <td className="px-5 py-3 text-gray-500">{u.sikh_id}</td>
+                      <td className="px-5 py-3 text-gray-500">{u.email}</td>
+                      <td className="px-5 py-3 text-gray-500">{u.country || '—'}</td>
+                      <td className="px-5 py-3 text-gray-500">{u.source_site || '—'}</td>
+                      <td className="px-5 py-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-saffron" style={{ width: `${u.profile_completion}%` }} />
+                          </div>
+                          <span className="text-xs text-gray-500">{u.profile_completion}%</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-gray-400 mt-3">Showing up to 50 results. Refine the search for more specific results.</p>
+        </main>
+      </div>
+    </div>
+  );
+}
