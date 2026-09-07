@@ -12,6 +12,7 @@ const NAV = [
   { label: 'Events', href: '/events' },
   { label: 'News corner', href: '/news' },
   { label: 'Hukamnama', href: '/hukamnama' },
+  { label: 'Nominations', href: '/nominations' },
 ];
 
 export default function AdminSidebar() {

@@ -81,3 +81,25 @@ export const listHukamnamaAdmin = () => request('/api/v1/admin/hukamnama');
 export const publishHukamnama = (payload: object) =>
   request('/api/v1/admin/hukamnama', { method: 'POST', body: JSON.stringify(payload) });
 export const deleteHukamnama = (id: number) => request(`/api/v1/admin/hukamnama/${id}`, { method: 'DELETE' });
+
+// --- Nominations ---
+export const listNominations = (params: Record<string, string | number> = {}) => {
+  const qs = new URLSearchParams(params as Record<string, string>).toString();
+  return request(`/api/v1/admin/nominations${qs ? `?${qs}` : ''}`);
+};
+export const getNomination = (id: number) => request(`/api/v1/admin/nominations/${id}`);
+
+// --- Nomination forms (per-site form builder) ---
+export const listNominationForms = () => request('/api/v1/admin/nominations/forms');
+export const getNominationForm = (siteDomain: string) =>
+  request(`/api/v1/admin/nominations/forms/${encodeURIComponent(siteDomain)}`);
+export const saveNominationForm = (
+  siteDomain: string,
+  payload: { title: string; fields: object[]; is_active: boolean }
+) =>
+  request(`/api/v1/admin/nominations/forms/${encodeURIComponent(siteDomain)}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  });
+export const deleteNominationForm = (siteDomain: string) =>
+  request(`/api/v1/admin/nominations/forms/${encodeURIComponent(siteDomain)}`, { method: 'DELETE' });
