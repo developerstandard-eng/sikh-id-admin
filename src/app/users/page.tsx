@@ -92,55 +92,89 @@ export default function UsersPage() {
 
           {error ? <p className="text-sm text-red-600 mb-4">{error}</p> : null}
 
-          <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-            <table className="w-full text-sm min-w-[720px]">
-              <thead>
-                <tr className="text-left text-xs text-gray-400 uppercase tracking-wide border-b border-gray-100">
-                  <th className="px-5 py-3 font-medium">Name</th>
-                  <th className="px-5 py-3 font-medium">Sikh ID</th>
-                  <th className="px-5 py-3 font-medium">Email</th>
-                  <th className="px-5 py-3 font-medium">Country</th>
-                  <th className="px-5 py-3 font-medium">Signed up via</th>
-                  <th className="px-5 py-3 font-medium">Completion</th>
-                  <th className="px-5 py-3 font-medium"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <tr><td colSpan={7} className="px-5 py-6 text-center text-gray-400">Loading...</td></tr>
-                ) : users.length === 0 ? (
-                  <tr><td colSpan={7} className="px-5 py-6 text-center text-gray-400">No members match this filter.</td></tr>
-                ) : (
-                  users.map((u) => (
-                    <tr key={u.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50">
-                      <td className="px-5 py-3 font-medium text-navy">{u.full_name}</td>
-                      <td className="px-5 py-3 text-gray-500">{u.sikh_id}</td>
-                      <td className="px-5 py-3 text-gray-500">{u.email}</td>
-                      <td className="px-5 py-3 text-gray-500">{u.country || '—'}</td>
-                      <td className="px-5 py-3 text-gray-500">{u.source_site || '—'}</td>
-                      <td className="px-5 py-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-saffron" style={{ width: `${u.profile_completion}%` }} />
-                          </div>
-                          <span className="text-xs text-gray-500">{u.profile_completion}%</span>
-                        </div>
-                      </td>
-                      <td className="px-5 py-3 text-right">
-                        <button
-                          onClick={() => handleDelete(u)}
-                          disabled={deletingId === u.id}
-                          className="text-xs text-red-600 hover:text-red-700 hover:underline disabled:opacity-50 disabled:no-underline"
-                        >
-                          {deletingId === u.id ? 'Deleting...' : 'Delete'}
-                        </button>
-                      </td>
+          {loading ? (
+            <div className="bg-white rounded-xl border border-gray-200 px-5 py-6 text-center text-gray-400 text-sm">Loading...</div>
+          ) : users.length === 0 ? (
+            <div className="bg-white rounded-xl border border-gray-200 px-5 py-6 text-center text-gray-400 text-sm">No members match this filter.</div>
+          ) : (
+            <>
+              {/* Below sm: one card per member — a side-by-side table would force
+                  columns too narrow to read on a phone, no matter how it's scaled. */}
+              <div className="sm:hidden bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+                {users.map((u) => (
+                  <div key={u.id} className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="font-medium text-navy truncate">{u.full_name}</div>
+                        <div className="text-xs text-gray-400">{u.sikh_id}</div>
+                      </div>
+                      <button
+                        onClick={() => handleDelete(u)}
+                        disabled={deletingId === u.id}
+                        className="text-xs text-red-600 hover:text-red-700 disabled:opacity-50 shrink-0"
+                      >
+                        {deletingId === u.id ? 'Deleting...' : 'Delete'}
+                      </button>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-2 break-all">{u.email}</div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {u.country || '—'} &middot; via {u.source_site || '—'}
+                    </div>
+                    <div className="flex items-center gap-2 mt-2.5">
+                      <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-saffron" style={{ width: `${u.profile_completion}%` }} />
+                      </div>
+                      <span className="text-xs text-gray-500 shrink-0">{u.profile_completion}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="hidden sm:block bg-white rounded-xl border border-gray-200 overflow-x-auto">
+                <table className="w-full text-sm min-w-[720px]">
+                  <thead>
+                    <tr className="text-left text-xs text-gray-400 uppercase tracking-wide border-b border-gray-100">
+                      <th className="px-5 py-3 font-medium">Name</th>
+                      <th className="px-5 py-3 font-medium">Sikh ID</th>
+                      <th className="px-5 py-3 font-medium">Email</th>
+                      <th className="px-5 py-3 font-medium">Country</th>
+                      <th className="px-5 py-3 font-medium">Signed up via</th>
+                      <th className="px-5 py-3 font-medium">Completion</th>
+                      <th className="px-5 py-3 font-medium"></th>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                  </thead>
+                  <tbody>
+                    {users.map((u) => (
+                      <tr key={u.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50">
+                        <td className="px-5 py-3 font-medium text-navy">{u.full_name}</td>
+                        <td className="px-5 py-3 text-gray-500">{u.sikh_id}</td>
+                        <td className="px-5 py-3 text-gray-500">{u.email}</td>
+                        <td className="px-5 py-3 text-gray-500">{u.country || '—'}</td>
+                        <td className="px-5 py-3 text-gray-500">{u.source_site || '—'}</td>
+                        <td className="px-5 py-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div className="h-full bg-saffron" style={{ width: `${u.profile_completion}%` }} />
+                            </div>
+                            <span className="text-xs text-gray-500">{u.profile_completion}%</span>
+                          </div>
+                        </td>
+                        <td className="px-5 py-3 text-right">
+                          <button
+                            onClick={() => handleDelete(u)}
+                            disabled={deletingId === u.id}
+                            className="text-xs text-red-600 hover:text-red-700 hover:underline disabled:opacity-50 disabled:no-underline"
+                          >
+                            {deletingId === u.id ? 'Deleting...' : 'Delete'}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
           <p className="text-xs text-gray-400 mt-3">Showing up to 50 results. Refine the search for more specific results.</p>
         </main>
       </div>

@@ -115,37 +115,59 @@ function SubmissionsTab() {
 
       {error ? <p className="text-sm text-red-600 mb-3">{error}</p> : null}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
-        <table className="w-full text-sm min-w-[640px]">
-          <thead>
-            <tr className="text-left text-xs text-gray-400 uppercase tracking-wide border-b border-gray-200">
-              <th className="px-5 py-3 font-medium">Submitted by</th>
-              <th className="px-5 py-3 font-medium">Site</th>
-              <th className="px-5 py-3 font-medium">Form</th>
-              <th className="px-5 py-3 font-medium">Date</th>
-              <th className="px-5 py-3 font-medium"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.length === 0 ? (
-              <tr><td colSpan={5} className="px-5 py-8 text-center text-gray-400 text-sm">No nominations yet.</td></tr>
-            ) : rows.map((r) => (
-              <tr key={r.id} className="border-b border-gray-100 last:border-0">
-                <td className="px-5 py-3">
-                  <div className="font-medium text-navy">{r.submitted_by_name}</div>
-                  <div className="text-xs text-gray-400">{r.submitted_by_email} &middot; {r.submitted_by_sikh_id}</div>
-                </td>
-                <td className="px-5 py-3 text-gray-500">{r.site_domain}</td>
-                <td className="px-5 py-3 text-gray-500">{r.form_title}</td>
-                <td className="px-5 py-3 text-gray-500">{new Date(r.created_at).toLocaleDateString()}</td>
-                <td className="px-5 py-3 text-right">
-                  <button onClick={() => openDetail(r.id)} className="text-xs text-saffron font-medium hover:underline">View</button>
-                </td>
-              </tr>
+      {rows.length === 0 ? (
+        <div className="bg-white rounded-xl border border-gray-200 px-5 py-8 text-center text-gray-400 text-sm">No nominations yet.</div>
+      ) : (
+        <>
+          {/* Below sm: one card per submission — a side-by-side table would force
+              columns too narrow to read on a phone, no matter how it's scaled. */}
+          <div className="sm:hidden bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+            {rows.map((r) => (
+              <div key={r.id} className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="font-medium text-navy truncate">{r.submitted_by_name}</div>
+                    <div className="text-xs text-gray-400 truncate">{r.submitted_by_email} &middot; {r.submitted_by_sikh_id}</div>
+                  </div>
+                  <button onClick={() => openDetail(r.id)} className="text-xs text-saffron font-medium shrink-0">View</button>
+                </div>
+                <div className="text-xs text-gray-500 mt-2">{r.form_title} &middot; {r.site_domain}</div>
+                <div className="text-xs text-gray-400 mt-0.5">{new Date(r.created_at).toLocaleDateString()}</div>
+              </div>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </div>
+
+          <div className="hidden sm:block bg-white rounded-xl border border-gray-200 overflow-x-auto">
+            <table className="w-full text-sm min-w-[640px]">
+              <thead>
+                <tr className="text-left text-xs text-gray-400 uppercase tracking-wide border-b border-gray-200">
+                  <th className="px-5 py-3 font-medium">Submitted by</th>
+                  <th className="px-5 py-3 font-medium">Site</th>
+                  <th className="px-5 py-3 font-medium">Form</th>
+                  <th className="px-5 py-3 font-medium">Date</th>
+                  <th className="px-5 py-3 font-medium"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.id} className="border-b border-gray-100 last:border-0">
+                    <td className="px-5 py-3">
+                      <div className="font-medium text-navy">{r.submitted_by_name}</div>
+                      <div className="text-xs text-gray-400">{r.submitted_by_email} &middot; {r.submitted_by_sikh_id}</div>
+                    </td>
+                    <td className="px-5 py-3 text-gray-500">{r.site_domain}</td>
+                    <td className="px-5 py-3 text-gray-500">{r.form_title}</td>
+                    <td className="px-5 py-3 text-gray-500">{new Date(r.created_at).toLocaleDateString()}</td>
+                    <td className="px-5 py-3 text-right">
+                      <button onClick={() => openDetail(r.id)} className="text-xs text-saffron font-medium hover:underline">View</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
 
       {totalPages > 1 ? (
         <div className="flex items-center gap-3 mt-4 text-sm">
