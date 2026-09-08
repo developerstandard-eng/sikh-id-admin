@@ -66,7 +66,7 @@ export default function HukamnamaPage() {
       <div className="flex-1 min-h-screen bg-[#f5f6f8]">
         <AdminTopBar title="Hukamnama" subtitle="Publish the day's reading — flashes as a banner on every member dashboard" />
 
-        <main className="p-8 grid grid-cols-2 gap-8">
+        <main className="p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="text-xs bg-amber-50 border border-amber-200 text-amber-800 rounded-lg px-3.5 py-2.5 mb-5 leading-relaxed">
               This publishes what members see verbatim — paste in the actual day's reading
@@ -98,7 +98,7 @@ export default function HukamnamaPage() {
                 className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
             </label>
 
-            <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
               <label>
                 <span className="block text-xs font-medium text-navy mb-1">Source name</span>
                 <input value={form.source_name} onChange={(e) => setForm({ ...form, source_name: e.target.value })}

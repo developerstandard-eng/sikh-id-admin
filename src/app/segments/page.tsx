@@ -107,7 +107,7 @@ export default function SegmentsPage() {
       <div className="flex-1 min-h-screen bg-[#f5f6f8]">
         <AdminTopBar title="Segments" subtitle="Build reusable filters — segments re-evaluate live against current member data" />
 
-        <main className="p-8 grid grid-cols-2 gap-8">
+        <main className="p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Builder */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="text-sm font-semibold text-navy mb-4">Build a new segment</h2>
@@ -124,7 +124,7 @@ export default function SegmentsPage() {
                 className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
             </label>
 
-            <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
               <label>
                 <span className="block text-xs font-medium text-navy mb-1">Completion min %</span>
                 <input value={completionMin} onChange={(e) => setCompletionMin(e.target.value)} type="number" min={0} max={100}
@@ -153,14 +153,14 @@ export default function SegmentsPage() {
             {error ? <p className="text-sm text-red-600 mb-3">{error}</p> : null}
             {message ? <p className="text-sm text-green-600 mb-3">{message}</p> : null}
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <button onClick={runPreview} className="text-sm border border-gray-300 px-4 py-2.5 rounded-lg hover:border-navy">
                 Preview count
               </button>
               {previewCount !== null ? (
                 <span className="text-sm text-navy font-medium">{previewCount} members match</span>
               ) : null}
-              <div className="flex-1" />
+              <div className="flex-1 hidden sm:block" />
               <button onClick={save} disabled={saving} className="bg-saffron text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-saffron-dark disabled:opacity-60">
                 {saving ? 'Saving...' : 'Save segment'}
               </button>

@@ -56,7 +56,7 @@ export default function CampaignsPage() {
       <div className="flex-1 min-h-screen bg-[#f5f6f8]">
         <AdminTopBar title="Campaigns" subtitle="Send a manual email to any saved segment — re-evaluated live at send time" />
 
-        <main className="p-8 max-w-2xl">
+        <main className="p-4 sm:p-6 lg:p-8 max-w-2xl">
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <label className="block mb-5">
               <span className="block text-xs font-medium text-navy mb-1">Segment</span>
@@ -88,7 +88,7 @@ export default function CampaignsPage() {
                 className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm font-mono text-xs" />
             </label>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <label>
                 <span className="block text-xs font-medium text-navy mb-1">Button label</span>
                 <input value={ctaLabel} onChange={(e) => setCtaLabel(e.target.value)}

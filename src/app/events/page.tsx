@@ -73,7 +73,7 @@ export default function EventsPage() {
       <div className="flex-1 min-h-screen bg-[#f5f6f8]">
         <AdminTopBar title="Events" subtitle="Community, business, award and webinar events shown on member dashboards" />
 
-        <main className="p-8 grid grid-cols-2 gap-8">
+        <main className="p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="text-sm font-semibold text-navy mb-4">{editingId ? 'Edit event' : 'Create an event'}</h2>
 
@@ -89,7 +89,7 @@ export default function EventsPage() {
                 className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
             </label>
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <label>
                 <span className="block text-xs font-medium text-navy mb-1">Type</span>
                 <select value={form.event_type} onChange={(e) => setForm({ ...form, event_type: e.target.value })}
@@ -108,7 +108,7 @@ export default function EventsPage() {
               </label>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <label>
                 <span className="block text-xs font-medium text-navy mb-1">Date</span>
                 <input type="date" value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })}
@@ -132,7 +132,7 @@ export default function EventsPage() {
                 className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
             </label>
 
-            <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
               <label>
                 <span className="block text-xs font-medium text-navy mb-1">Button label</span>
                 <input value={form.cta_label} onChange={(e) => setForm({ ...form, cta_label: e.target.value })}

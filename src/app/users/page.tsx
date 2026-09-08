@@ -64,9 +64,9 @@ export default function UsersPage() {
       <div className="flex-1 min-h-screen bg-[#f5f6f8]">
         <AdminTopBar title="Members" subtitle={`${total} members across the Sikh Group network`} />
 
-        <main className="p-8">
-          <div className="flex items-end gap-3 mb-5">
-            <label className="flex-1">
+        <main className="p-4 sm:p-6 lg:p-8">
+          <div className="flex flex-wrap items-end gap-3 mb-5">
+            <label className="flex-1 min-w-[220px]">
               <span className="block text-xs font-medium text-navy mb-1">Search name, email, or Sikh ID</span>
               <input
                 value={search} onChange={(e) => setSearch(e.target.value)}
@@ -75,15 +75,15 @@ export default function UsersPage() {
                 placeholder="e.g. Navdeep, TSG-10001, name@email.com"
               />
             </label>
-            <label>
+            <label className="w-20 sm:w-24">
               <span className="block text-xs font-medium text-navy mb-1">Min %</span>
               <input value={minC} onChange={(e) => setMinC(e.target.value)} type="number" min={0} max={100}
-                className="w-24 border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
+                className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
             </label>
-            <label>
+            <label className="w-20 sm:w-24">
               <span className="block text-xs font-medium text-navy mb-1">Max %</span>
               <input value={maxC} onChange={(e) => setMaxC(e.target.value)} type="number" min={0} max={100}
-                className="w-24 border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
+                className="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm" />
             </label>
             <button onClick={load} className="bg-saffron text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-saffron-dark">
               Filter
@@ -92,8 +92,8 @@ export default function UsersPage() {
 
           {error ? <p className="text-sm text-red-600 mb-4">{error}</p> : null}
 
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
+            <table className="w-full text-sm min-w-[720px]">
               <thead>
                 <tr className="text-left text-xs text-gray-400 uppercase tracking-wide border-b border-gray-100">
                   <th className="px-5 py-3 font-medium">Name</th>

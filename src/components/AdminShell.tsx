@@ -2,8 +2,8 @@
 
 export function AdminTopBar({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
-    <header className="px-8 py-5 bg-white border-b border-gray-200">
-      <h1 className="text-lg font-semibold text-navy">{title}</h1>
+    <header className="pl-16 pr-4 py-4 sm:px-8 sm:py-5 lg:pl-8 bg-white border-b border-gray-200">
+      <h1 className="text-base sm:text-lg font-semibold text-navy">{title}</h1>
       {subtitle ? <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p> : null}
     </header>
   );

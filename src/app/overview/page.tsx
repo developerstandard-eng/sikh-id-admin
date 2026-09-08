@@ -43,19 +43,19 @@ export default function OverviewPage() {
       <div className="flex-1 min-h-screen bg-[#f5f6f8]">
         <AdminTopBar title="Ecosystem overview" subtitle="Live snapshot of the Sikh ID member base across the whole network" />
 
-        <main className="p-8">
+        <main className="p-4 sm:p-6 lg:p-8">
           {!stats ? (
             <p className="text-sm text-gray-400">Loading...</p>
           ) : (
             <>
-              <div className="grid grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <StatCard label="Total members" value={stats.totals.total_users} />
                 <StatCard label="Average completion" value={`${stats.totals.avg_completion || 0}%`} />
                 <StatCard label="Fully complete profiles" value={stats.totals.complete_count} />
                 <StatCard label="New in last 30 days" value={stats.totals.new_last_30_days} />
               </div>
 
-              <div className="grid grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-white rounded-xl border border-gray-200 p-5">
                   <div className="text-xs text-gray-400 uppercase tracking-wide mb-4">Completion distribution</div>
                   <div className="space-y-3">
@@ -96,7 +96,7 @@ export default function OverviewPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white rounded-xl border border-gray-200 p-5">
                   <div className="text-xs text-gray-400 uppercase tracking-wide mb-3">Top industries</div>
                   <ul className="space-y-2">

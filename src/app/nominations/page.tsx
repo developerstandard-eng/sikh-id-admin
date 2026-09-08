@@ -41,7 +41,7 @@ export default function NominationsPage() {
       <div className="flex-1 min-h-screen bg-[#f5f6f8]">
         <AdminTopBar title="Nominations" subtitle="Nomination submissions from every site, and each site's form fields" />
 
-        <div className="px-8 pt-6">
+        <div className="px-4 sm:px-8 pt-6">
           <div className="inline-flex bg-white border border-gray-200 rounded-lg p-1">
             <button
               onClick={() => setTab('submissions')}
@@ -58,7 +58,7 @@ export default function NominationsPage() {
           </div>
         </div>
 
-        <main className="p-8 pt-6">
+        <main className="p-4 sm:p-6 lg:p-8 pt-6">
           {tab === 'submissions' ? <SubmissionsTab /> : <BuilderTab />}
         </main>
       </div>
@@ -101,7 +101,7 @@ function SubmissionsTab() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
         <select
           value={siteFilter}
           onChange={(e) => { setSiteFilter(e.target.value); setPage(1); }}
@@ -115,8 +115,8 @@ function SubmissionsTab() {
 
       {error ? <p className="text-sm text-red-600 mb-3">{error}</p> : null}
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
+        <table className="w-full text-sm min-w-[640px]">
           <thead>
             <tr className="text-left text-xs text-gray-400 uppercase tracking-wide border-b border-gray-200">
               <th className="px-5 py-3 font-medium">Submitted by</th>
@@ -156,8 +156,8 @@ function SubmissionsTab() {
       ) : null}
 
       {detail ? (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-6 z-50" onClick={() => setDetail(null)}>
-          <div className="bg-white rounded-xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 sm:p-6 z-50" onClick={() => setDetail(null)}>
+          <div className="bg-white rounded-xl max-w-lg w-full max-h-[80vh] overflow-y-auto p-5 sm:p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h3 className="text-sm font-semibold text-navy">{detail.form_title}</h3>
@@ -262,7 +262,7 @@ function BuilderTab() {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div>
         <h2 className="text-sm font-semibold text-navy mb-4">Sites</h2>
         <div className="space-y-2 mb-5">
@@ -300,7 +300,7 @@ function BuilderTab() {
         </div>
       </div>
 
-      <div className="col-span-2">
+      <div className="lg:col-span-2">
         {!form ? (
           <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-sm text-gray-400">
             Select a site on the left, or add a new one, to build its nomination form.
@@ -325,27 +325,27 @@ function BuilderTab() {
             <div className="space-y-3 mb-4">
               {form.fields_json.map((f, i) => (
                 <div key={i} className="border border-gray-200 rounded-lg p-3.5">
-                  <div className="grid grid-cols-12 gap-2 items-center mb-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center mb-2">
                     <input
                       value={f.label}
                       onChange={(e) => updateField(i, { label: e.target.value })}
                       placeholder="Label, e.g. Nominee's Company"
-                      className="col-span-5 border border-gray-300 rounded-md px-2.5 py-1.5 text-sm"
+                      className="sm:col-span-5 border border-gray-300 rounded-md px-2.5 py-1.5 text-sm"
                     />
                     <input
                       value={f.key}
                       onChange={(e) => updateField(i, { key: e.target.value.trim().replace(/\s+/g, '_') })}
                       placeholder="key"
-                      className="col-span-3 border border-gray-300 rounded-md px-2.5 py-1.5 text-sm font-mono text-xs"
+                      className="sm:col-span-3 border border-gray-300 rounded-md px-2.5 py-1.5 text-sm font-mono text-xs"
                     />
                     <select
                       value={f.type}
                       onChange={(e) => updateField(i, { type: e.target.value })}
-                      className="col-span-2 border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white"
+                      className="sm:col-span-2 border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white"
                     >
                       {FIELD_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
                     </select>
-                    <div className="col-span-2 flex justify-end gap-1.5 text-xs">
+                    <div className="sm:col-span-2 flex justify-end gap-3 sm:gap-1.5 text-xs">
                       <button onClick={() => moveField(i, -1)} className="text-gray-400 hover:text-navy">&uarr;</button>
                       <button onClick={() => moveField(i, 1)} className="text-gray-400 hover:text-navy">&darr;</button>
                       <button onClick={() => removeField(i)} className="text-gray-400 hover:text-red-600">&times;</button>
